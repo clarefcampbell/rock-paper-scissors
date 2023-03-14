@@ -31,14 +31,41 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-//test functions so far before moving on 
-console.log(playRound("rock", getComputerChoice()));
-
 //create function called game() 
     //call playRound 5 times and keep score
 function game() {
+    
+    //Initialize variables
+    let playerSelection;
+    let roundWinner;
+    let playerScore = 0;
+    let computerScore = 0;
+
+    //Play 5 rounds
     for (let i = 0; i < 5; i++) {
-        //use prompt() to get input from the user 
+        //Get player choice each round
+        playerSelection = prompt("Rock, Paper, Scissors?");
+        //Determine winner of round by storing 'I' (tie), 'C' (computer) or 'P' (player) from return statements 
+        roundWinner = playRound(playerSelection, getComputerChoice()).charAt(0);
+        //Add point for the round
+        switch (roundWinner) {
+            case 'P':
+                playerScore++;
+                break;
+            case 'C':
+                computerScore++;
+                break;
+        }
+    }
+
+    //Determine winner
+    if (playerScore > computerScore) {
+        return `Player wins ${playerScore} to ${computerScore}`;
+    } else if (playerScore == computerScore) {
+        return "It's a tie!";
+    } else {
+        return `Computer wins ${computerScore} to ${playerScore}`;
     }
 }
-//console.log() to display these results
+//display these results
+console.log(game());
