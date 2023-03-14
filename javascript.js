@@ -23,11 +23,14 @@ function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.toLowerCase().slice(1);
     //Winning conditions and return strings
     if ((playerSelection == 'Rock' && computerSelection == 'Scissors') || (playerSelection == 'Paper' && computerSelection == 'Rock') || (playerSelection == 'Scissors' && computerSelection == 'Paper')) {
-        return `Player wins! ${playerSelection} beats ${computerSelection}!`;
+        console.log(`Player wins! ${playerSelection} beats ${computerSelection}!`);
+        return 'Player';
     } else if (playerSelection == computerSelection) {
-        return "It's a tie!";
+        console.log(`It's a tie between ${playerSelection}`);
+        return "Tie";
     } else {
-        return `Computer wins! ${computerSelection} beats ${playerSelection}!`;
+        console.log(`Computer wins! ${computerSelection} beats ${playerSelection}!`);
+        return "Computer";
     }
 }
 
@@ -40,29 +43,34 @@ function game() {
     let roundWinner;
     let playerScore = 0;
     let computerScore = 0;
+    let ties = 0;
 
     //Play 5 rounds
     for (let i = 0; i < 5; i++) {
         //Get player choice each round
         playerSelection = prompt("Rock, Paper, Scissors?");
         //Determine winner of round by storing 'I' (tie), 'C' (computer) or 'P' (player) from return statements 
-        roundWinner = playRound(playerSelection, getComputerChoice()).charAt(0);
+        roundWinner = playRound(playerSelection, getComputerChoice());
         //Add point for the round
         switch (roundWinner) {
-            case 'P':
+            case 'Player':
                 playerScore++;
                 break;
-            case 'C':
+            case 'Computer':
                 computerScore++;
                 break;
+            case 'Tie':
+                ties++;
+                break;
         }
+        console.log(`Player now has ${playerScore} points vs Computer at ${computerScore} points. ${ties} ties.`);
     }
 
     //Determine winner
     if (playerScore > computerScore) {
         return `Player wins ${playerScore} to ${computerScore}`;
     } else if (playerScore == computerScore) {
-        return "It's a tie!";
+        return "Final result: It's a tie!";
     } else {
         return `Computer wins ${computerScore} to ${playerScore}`;
     }
