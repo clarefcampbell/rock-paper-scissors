@@ -23,57 +23,78 @@ function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.toLowerCase().slice(1);
     //Winning conditions and return strings
     if ((playerSelection == 'Rock' && computerSelection == 'Scissors') || (playerSelection == 'Paper' && computerSelection == 'Rock') || (playerSelection == 'Scissors' && computerSelection == 'Paper')) {
-        console.log(`Player wins! ${playerSelection} beats ${computerSelection}!`);
+        results.textContent += `\nPlayer wins! ${playerSelection} beats ${computerSelection}! `;
         return 'Player';
     } else if (playerSelection == computerSelection) {
-        console.log(`It's a tie between ${playerSelection}`);
+        results.textContent += `\nIt's a tie between ${playerSelection}. `;
         return "Tie";
     } else {
-        console.log(`Computer wins! ${computerSelection} beats ${playerSelection}!`);
+        results.textContent += `\nComputer wins! ${computerSelection} beats ${playerSelection}! `;
         return "Computer";
     }
 }
 
-//create function called game() 
-    //call playRound 5 times and keep score
-function game() {
-    
-    //Initialize variables
-    let playerSelection;
-    let roundWinner;
-    let playerScore = 0;
-    let computerScore = 0;
-    let ties = 0;
+//Initialize global variables   
+let playerScore = 0;
+let computerScore = 0;
+let ties = 0;
+const results = document.getElementById('results');
+results.textContent = 'Rock Paper Scissors!';
 
-    //Play 5 rounds
-    for (let i = 0; i < 5; i++) {
-        //Get player choice each round
-        playerSelection = prompt("Rock, Paper, Scissors?");
-        //Determine winner of round by storing 'I' (tie), 'C' (computer) or 'P' (player) from return statements 
-        roundWinner = playRound(playerSelection, getComputerChoice());
-        //Add point for the round
-        switch (roundWinner) {
-            case 'Player':
-                playerScore++;
-                break;
-            case 'Computer':
-                computerScore++;
-                break;
-            case 'Tie':
-                ties++;
-                break;
-        }
-        console.log(`Player now has ${playerScore} points vs Computer at ${computerScore} points. ${ties} ties.`);
+function game(playerSelection) {
+    //Reset results if starting new game
+    if (playerScore == 0 && computerScore == 0) {
+        results.textContent = 'Rock Paper Scissors!';
     }
+    
+    //Determine winner of round by storing 'I' (tie), 'C' (computer) or 'P' (player) from return statements 
+    let roundWinner = playRound(playerSelection, getComputerChoice());
+    //Add point for the round
+    switch (roundWinner) {
+        case 'Player':
+            playerScore++;
+            break;
+        case 'Computer':
+            computerScore++;
+            break;
+        case 'Tie':
+            ties++;
+            break;
+    }
+    results.textContent += `Player now has ${playerScore} points vs Computer at ${computerScore} points. ${ties} ties.`;
 
     //Determine winner
-    if (playerScore > computerScore) {
-        return `Player wins ${playerScore} to ${computerScore}`;
-    } else if (playerScore == computerScore) {
-        return "Final result: It's a tie!";
-    } else {
-        return `Computer wins ${computerScore} to ${playerScore}`;
+    if (playerScore >= 5) {
+        results.textContent += `\nPlayer wins ${playerScore} to ${computerScore}`;
+        resetScore();
+
+    } else if (computerScore >= 5) {
+        results.textContent += `\nComputer wins ${computerScore} to ${playerScore}`;
+        resetScore();
     }
 }
-//display these results
-console.log(game());
+
+function resetScore() {
+    playerScore = 0;
+    computerScore = 0;
+    ties = 0;
+}
+
+
+//buttons
+const buttons = document.querySelectorAll('button');
+
+function playFromButton (e) {
+    game(this.id, getComputerChoice());
+}
+
+buttons.forEach(btn => btn.addEventListener('click', e => game(e.target.id)));
+
+
+//notes for text stuff:
+/*
+let theDiv = document.getElementById("results");
+theDiv.textContent = '';
+theDiv.textContent += '\nhi';
+theDiv.textContent += '\nnewline?';
+*/
