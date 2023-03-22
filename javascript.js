@@ -1,5 +1,18 @@
 //Rock Paper Scissors
 
+//Initialize global variables   
+let playerScore = 0;
+let computerScore = 0;
+let ties = 0;
+const results = document.getElementById('results');
+results.textContent = 'Rock Paper Scissors!';
+
+function resetScore() {
+    playerScore = 0;
+    computerScore = 0;
+    ties = 0;
+}
+
 //Get random computer choice, return 'Rock', 'Paper', or 'Scissors'
 function getComputerChoice() {
     randomChoice = Math.floor(Math.random()*3);
@@ -34,19 +47,13 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-//Initialize global variables   
-let playerScore = 0;
-let computerScore = 0;
-let ties = 0;
-const results = document.getElementById('results');
-results.textContent = 'Rock Paper Scissors!';
-
+//Play rounds, keep score, determine winner
 function game(playerSelection) {
     //Reset results if starting new game
     if (playerScore == 0 && computerScore == 0) {
         results.textContent = 'Rock Paper Scissors!';
     }
-    
+
     //Determine winner of round by storing 'I' (tie), 'C' (computer) or 'P' (player) from return statements 
     let roundWinner = playRound(playerSelection, getComputerChoice());
     //Add point for the round
@@ -67,34 +74,12 @@ function game(playerSelection) {
     if (playerScore >= 5) {
         results.textContent += `\nPlayer wins ${playerScore} to ${computerScore}`;
         resetScore();
-
     } else if (computerScore >= 5) {
         results.textContent += `\nComputer wins ${computerScore} to ${playerScore}`;
         resetScore();
     }
 }
 
-function resetScore() {
-    playerScore = 0;
-    computerScore = 0;
-    ties = 0;
-}
-
-
-//buttons
+//Use button events to control the game
 const buttons = document.querySelectorAll('button');
-
-function playFromButton (e) {
-    game(this.id, getComputerChoice());
-}
-
 buttons.forEach(btn => btn.addEventListener('click', e => game(e.target.id)));
-
-
-//notes for text stuff:
-/*
-let theDiv = document.getElementById("results");
-theDiv.textContent = '';
-theDiv.textContent += '\nhi';
-theDiv.textContent += '\nnewline?';
-*/
